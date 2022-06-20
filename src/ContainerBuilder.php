@@ -63,6 +63,9 @@ class ContainerBuilder
         mixed $value
     ): void
     {
+        if (is_a($value, \Closure::class)) {
+            throw new InvalidArgumentException('Autowire mode is not acceptable to set closure.');
+        }
         try {
             $reflection = new ReflectionClass($value);
         } catch(ReflectionException $e) {
