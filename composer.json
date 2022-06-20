@@ -1,5 +1,7 @@
 {
     "name": "graywings/container",
+    "version": "1.0.0",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Graywings\\Container\\": "src/"
