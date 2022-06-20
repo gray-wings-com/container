@@ -13,16 +13,17 @@ use PHPUnit\Framework\TestCase;
 class ContainerBuilderTest extends TestCase
 {
     function test_build() {
-        $containerBuilder = new ContainerBuilder(
+        $containerBuilder = new ContainerBuilder();
+        $container = $containerBuilder->build(
             [
+                'db.host' => 'db',
                 InjectInterface::class => InjectClass::class,
                 InjectedInterface::class => InjectedClass::class
             ]
         );
-        $container = $containerBuilder->build();
+        $dbHost = $container->get('db.host');
+        self::assertEquals('db', $dbHost);
         $inject = $container->get(InjectInterface::class);
-        var_dump($inject);
         $injected = $container->get(InjectedInterface::class);
-        var_dump($injected);
     }
 }
