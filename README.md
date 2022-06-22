@@ -1,31 +1,53 @@
-# graywings/container
+# Graywings/Container
 
+## DI-Container
+Graywings/Container is a lightweight DI container.
 
+## Example: Autowiring
+```php
+<?php
+declare(strict_types=1);
 
-## Getting Started
+use Graywings\Container\Injectable;
+use Graywings\Container\Inject;
 
-Download links:
+$containerBuilder = new ContainerBuilder();
+$container = $containerBuilder->build(
+    [
+        'db.host' => 'db',
+        InjectInterface::class => InjectClass::class,
+        InjectedInterface::class => InjectedClass::class
+    ]
+);
 
-SSH clone URL: ssh://git@git.jetbrains.space/graywings/graywings/container.git
+$container->get('db.host'); // 'db'
+$container->get(InjectInterface::class) // Instanceof InjectClass
+$container->get(InjectedInterface::class) // Instanceof InjectedClass
 
-HTTPS clone URL: https://git.jetbrains.space/graywings/graywings/container.git
+interface InjectInterface
+{
+}
 
+interface InjectedInterface
+{
+}
 
+#[Injectable]
+class InjectClass implements InjectInterface
+{
+}
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-## Prerequisites
-
-What things you need to install the software and how to install them.
-
+#[Injectable]
+class InjectedClass implements InjectedInterface
+{
+    private $inject;
+    #[Inject([InjectInterface::class])]
+    public function __construct(InjectInterface $inject)
+    {
+        $this->inject = $inject;
+    }
+    public function inject() {
+        return $this->inject;
+    }
+}
 ```
-Examples
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a production system.
-
-## Resources
-
-Add links to external resources for this project, such as CI server, bug tracker, etc.
